@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\m5860\\Desktop\\MyWebApi\\MyWebApi\\MyWebApi\\MyWebApi.csproj": {}
+    "C:\\Users\\m5860\\Desktop\\WebApi\\MyWebApi\\MyWebApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\m5860\\Desktop\\MyWebApi\\MyWebApi\\MyWebApi\\MyWebApi.csproj": {
+    "C:\\Users\\m5860\\Desktop\\WebApi\\MyWebApi\\MyWebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\m5860\\Desktop\\MyWebApi\\MyWebApi\\MyWebApi\\MyWebApi.csproj",
+        "projectUniqueName": "C:\\Users\\m5860\\Desktop\\WebApi\\MyWebApi\\MyWebApi.csproj",
         "projectName": "MyWebApi",
-        "projectPath": "C:\\Users\\m5860\\Desktop\\MyWebApi\\MyWebApi\\MyWebApi\\MyWebApi.csproj",
+        "projectPath": "C:\\Users\\m5860\\Desktop\\WebApi\\MyWebApi\\MyWebApi.csproj",
         "packagesPath": "C:\\Users\\m5860\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\m5860\\Desktop\\MyWebApi\\MyWebApi\\MyWebApi\\obj\\",
+        "outputPath": "C:\\Users\\m5860\\Desktop\\WebApi\\MyWebApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"

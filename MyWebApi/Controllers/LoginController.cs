@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Text.Json;
 using MyWebApi.Repository;
+using MyWebApi.Service;
 
 namespace MyWebApi.Controllers
 {
@@ -14,19 +15,35 @@ namespace MyWebApi.Controllers
     {
         private IRespository _resp;
 
+        private LoginService service;
+
         public LoginController(IRespository resp)
         {
             _resp = resp;
+            service = new LoginService(resp);
         }
 
         #region Create
         [HttpPost("CreateAccount")]
-        public async Task<ActionResult<AccountModelDTO>> CreateAccount(CreateAccountModel model)
+        public async Task<ActionResult<CreateAccountResponse>> CreateAccount(CreateAccountModel model)
         {
-            var oldAccount = await _resp.GetPlayerByAccount(model.Account);
-            if (oldAccount != null)
+            var response = new CreateAccountResponse();
+
+            var status = await service.AllowCreate(model.Account, model.Password);
+            if (status == CreateAccountStatus.HadAccount)
             {
-                return NotFound();
+                response.Status = status;
+                return response;
+            }
+            else if (status == CreateAccountStatus.AccountTooShort)
+            {
+                response.Status = status;
+                return response;
+            }
+            else if (status == CreateAccountStatus.PasswordTooShort)
+            {
+                response.Status = status;
+                return response;
             }
 
             var account = new AccountModel
@@ -41,11 +58,13 @@ namespace MyWebApi.Controllers
             _resp.Add(account);
             await _resp.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetAccountModel),
-                                   new
-                                   {
-                                       account = model.Account
-                                   }, ItemToDTO(account));
+            response.Data = ItemToDTO(account);
+            return response;
+            //return CreatedAtAction(nameof(GetAccountModel),
+            //                       new
+            //                       {
+            //                           account = model.Account
+            //                       }, ItemToDTO(account));
         }
         #endregion
 
