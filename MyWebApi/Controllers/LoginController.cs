@@ -15,12 +15,12 @@ namespace MyWebApi.Controllers
     {
         private IRespository _resp;
 
-        private LoginService service;
+        private IService _service;
 
-        public LoginController(IRespository resp)
+        public LoginController(IRespository resp, IService service)
         {
             _resp = resp;
-            service = new LoginService(resp);
+            _service = service;
         }
 
         #region Create
@@ -29,7 +29,7 @@ namespace MyWebApi.Controllers
         {
             var response = new CreateAccountResponse();
 
-            var status = await service.AllowCreate(model.Account, model.Password);
+            var status = await _service.AllowCreate(model.Account, model.Password);
             if (status == CreateAccountStatus.HadAccount)
             {
                 response.Status = status;

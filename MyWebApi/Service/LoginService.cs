@@ -11,7 +11,7 @@ namespace MyWebApi.Service
         PasswordTooShort
     }
 
-    public class LoginService
+    public class LoginService: IService
     {
         private IRespository _resp;
 

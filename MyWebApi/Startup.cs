@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyWebApi.Model.Context;
 using MyWebApi.Repository;
+using MyWebApi.Service;
 
 namespace MyWebApi
 {
@@ -22,6 +23,7 @@ namespace MyWebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IRespository, AccountRespository>();
+            services.AddScoped<IService, LoginService>();
             services.AddControllers();
             services.AddDbContext<LoginContext>(opt =>
                                                opt.UseMySQL(Configuration.GetConnectionString("LoginContext")));
