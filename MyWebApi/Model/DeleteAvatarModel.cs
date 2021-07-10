@@ -1,8 +1,8 @@
 ﻿namespace MyWebApi.Model
 {
-    public class LoginModel
+    public class DeleteAvatarModel
     {
         public string Account { get; set; }
-        public string Password { get; set; }
+        public sbyte AvatarId { get; set; }
     }
 }

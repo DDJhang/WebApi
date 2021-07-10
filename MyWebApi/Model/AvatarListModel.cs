@@ -1,8 +1,7 @@
 ﻿namespace MyWebApi.Model
 {
-    public class LoginModel
+    public class AvatarListModel
     {
         public string Account { get; set; }
-        public string Password { get; set; }
     }
 }

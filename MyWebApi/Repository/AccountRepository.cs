@@ -1,17 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MyWebApi.Context;
 using MyWebApi.Model;
-using MyWebApi.Model.Context;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace MyWebApi.Repository
 {
-    public class AccountRespository : IRespository
+    public class AccountRepository : IAccountRepository
     {
-        private LoginContext _context;
+        private AccountContext _context;
 
-        public AccountRespository(LoginContext context)
+        public AccountRepository(AccountContext context)
         {
             _context = context;
         }
@@ -38,17 +38,17 @@ namespace MyWebApi.Repository
         {
             if (containDelete)
             {
-                return await _context.accountitems.ToListAsync();
+                return await _context.accounts.ToListAsync();
             }
             else
             { 
-                return await _context.accountitems.Where(x => x.Delete == 0).ToListAsync();
+                return await _context.accounts.Where(x => x.Delete == 0).ToListAsync();
             }
         }
 
         public async Task<AccountModel> GetPlayerByAccount(string account)
         {
-            return await _context.accountitems.Where(x => x.Account == account).SingleOrDefaultAsync();
+            return await _context.accounts.Where(x => x.Account == account).SingleOrDefaultAsync();
         }
 
         public async Task<bool> SaveChangesAsync()
