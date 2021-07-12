@@ -15,8 +15,6 @@ namespace MyWebApi.Repository
 
         private string _connectString = "Data Source=localhost;port=3306;User ID=root; Password=123456; database='account';";
 
-        private AccountModelMap map;
-
         public AccountRepository(AccountContext context)
         {
             _context = context;
@@ -78,7 +76,7 @@ namespace MyWebApi.Repository
                 });
             }
 
-            // 下兩方法 記憶體提升量差不多
+            // 下兩方法 記憶體提升差不多
             //using (var scope = _serviceProvider.CreateScope())
             //{
             //    var db = scope.ServiceProvider.GetRequiredService<AccountContext>();

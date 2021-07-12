@@ -11,25 +11,16 @@
         InvalidAccount,
     }
 
-    public enum AvatarStatus
-    {
-        Success,
-        InvalidAccount,
-        AvatarIsFull,
-        AvatarIsEmpty,
-        InvalidAvatar,
-        RepeatAvatarName,
+    public enum PunchStatus
+    { 
+        PunchIn,
+        PunchOut
     }
 
-    public enum Job
+    public enum AttendanceStatus
     {
-        Warrior,
-        Mage
-    }
-
-    public enum ItemType
-    {
-        HpItem,
-        MpItem
+        Today,
+        SevenDays,
+        //ThirtyDays,
     }
 }
