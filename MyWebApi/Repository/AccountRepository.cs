@@ -1,12 +1,10 @@
 ﻿using Dapper;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+using Dapper.FluentMap;
 using MySql.Data.MySqlClient;
 using MyWebApi.Context;
 using MyWebApi.Model;
-using System;
+using MyWebApi.Repository.Map;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MyWebApi.Repository
@@ -14,12 +12,20 @@ namespace MyWebApi.Repository
     public class AccountRepository : IAccountRepository
     {
         private AccountContext _context;
-        private IServiceProvider _serviceProvider;
 
-        public AccountRepository(AccountContext context, IServiceProvider serviceProvider)
+        private string _connectString = "Data Source=localhost;port=3306;User ID=root; Password=123456; database='account';";
+
+        private AccountModelMap map;
+
+        public AccountRepository(AccountContext context)
         {
             _context = context;
-            _serviceProvider = serviceProvider;
+
+            FluentMapper.EntityMaps.Clear();
+            FluentMapper.Initialize(config =>
+            {
+                config.AddMap(new AccountModelMap());
+            });
         }
 
         // ------------ Interface ----------
@@ -44,53 +50,49 @@ namespace MyWebApi.Repository
         {
             if (containDelete)
             {
-                return await _context.accounts.AsNoTracking().ToListAsync();
+                using (var conn = new MySqlConnection(_connectString))
+                {
+                    var sql = "SELECT * FROM accounts";
+                    return await conn.QueryAsync<AccountModel>(sql);
+                }
             }
             else
             {
-                using (var conn = new MySqlConnection("AccountContext"))
+                using (var conn = new MySqlConnection(_connectString))
                 {
-                    var sql = "SELECT * FROM account WHERE delete = 0";
+                    var sql = "SELECT * FROM accounts WHERE inactive = 0";
                     return await conn.QueryAsync<AccountModel>(sql);
                 }
-                //return await _context.accounts.AsNoTracking().Where(x => x.Delete == 0).ToListAsync();
             }
         }
 
         public async Task<AccountModel> GetPlayerByAccount(string account, bool isTracking = true)
         {
-            //using (var conn = new MySqlConnection("AccountContext"))
+            // 記憶體提升最少
+            using (var conn = new MySqlConnection(_connectString))
+            {
+                var sql = "SELECT * FROM accounts WHERE account = @account";
+                return await conn.QueryFirstAsync<AccountModel>(sql, param: new
+                {
+                    account
+                });
+            }
+
+            // 下兩方法 記憶體提升量差不多
+            //using (var scope = _serviceProvider.CreateScope())
             //{
-            //    var sql = "SELECT * FROM account WHERE account = " + account;
-            //    return await conn.QueryFirstAsync<AccountModel>(sql);
+            //    var db = scope.ServiceProvider.GetRequiredService<AccountContext>();
+            //    try
+            //    {
+            //        return await db.accounts.AsNoTracking().Where(x => x.Account == account).SingleOrDefaultAsync();
+            //    }
+            //    finally
+            //    {
+            //        db.Dispose();
+            //    }
             //}
 
-            if (isTracking)
-            {
-                using (var scope = _serviceProvider.CreateScope())
-                {
-                    var db = scope.ServiceProvider.GetRequiredService<AccountContext>();
-                    try
-                    {
-                        return await db.accounts.Where(x => x.Account == account).SingleOrDefaultAsync();
-                    }
-                    finally
-                    {
-                        db.Dispose();
-                    }
-                }
-            }
-            else
-            {
-                using (var conn = new MySqlConnection("AccountContext"))
-                {
-                    var sql = "SELECT * FROM account WHERE account = @account";
-                    return await conn.QueryFirstAsync<AccountModel>(sql, param: new { 
-                        account
-                    });
-                }
-                //return await _context.accounts.AsNoTracking().Where(x => x.Account == account).SingleOrDefaultAsync();
-            }
+            //return await _context.accounts.AsNoTracking().Where(x => x.Account == account).SingleOrDefaultAsync();
         }
 
         public async Task<bool> SaveChangesAsync()

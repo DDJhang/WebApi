@@ -13,7 +13,8 @@ namespace MyWebApi
             var dto = new AccountModelDTO()
             {
                 Account = model.Account,
-                Name = model.Name
+                Name = model.Name,
+                Delete = model.Delete
             };
 
             return dto;
