@@ -8,6 +8,6 @@ namespace MyWebApi.Repository
     {
         Task DeleteByAccount(string account);
         Task<IEnumerable<AccountModel>> GetPlayerList(bool containDelete);
-        Task<AccountModel> GetPlayerByAccount(string account);
+        Task<AccountModel> GetPlayerByAccount(string account, bool isTracking = true);
     }
 }

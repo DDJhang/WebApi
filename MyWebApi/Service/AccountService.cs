@@ -84,7 +84,7 @@ namespace MyWebApi.Service
             return response;
         }
 
-        public async Task<GetAccountResponse> GetAccountModel(string account)
+        public async Task<GetAccountResponse> GetAccountModel(string account, bool isTracking = true)
         {
             var response = new GetAccountResponse()
             {
@@ -92,7 +92,7 @@ namespace MyWebApi.Service
                 Account = null
             };
 
-            var model = await _resp.GetPlayerByAccount(account);
+            var model = await _resp.GetPlayerByAccount(account, isTracking);
             if (model == null)
             {
                 response.Status = AccountStatus.InvalidAccount;

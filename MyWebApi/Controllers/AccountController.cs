@@ -51,7 +51,7 @@ namespace MyWebApi.Controllers
         [HttpGet("ReadAccount")]
         public async Task<ActionResult<GetAccountResponse>> GetAccountModel(string account)
         {
-            var response = await _service.GetAccountModel(account);
+            var response = await _service.GetAccountModel(account, false);
             return response;
         }
 

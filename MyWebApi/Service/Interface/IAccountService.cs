@@ -9,7 +9,7 @@ namespace MyWebApi.Service
     {
         Task<AccountStatus> AllowCreate(string account, string password);
         Task<AccountModelDTO> CreateAccount(CreateAccountModel model);
-        Task<GetAccountResponse> GetAccountModel(string account);
+        Task<GetAccountResponse> GetAccountModel(string account, bool isTracking = true);
         Task<GetAccountListResponse> GetAccountList(bool containDelete);
         Task<AccountSleepResponse> SleepAccount(string account);
         Task<AccountSleepResponse> WakeUpAccount(string account);

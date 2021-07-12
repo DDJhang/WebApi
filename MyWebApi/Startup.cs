@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using MyWebApi.Context;
 using MyWebApi.Repository;
 using MyWebApi.Service;
+using System;
 
 namespace MyWebApi
 {
@@ -23,6 +24,7 @@ namespace MyWebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IAccountRepository, AccountRepository>();
+
             services.AddScoped<IAccountService, AccountService>();
 
             services.AddControllers();
