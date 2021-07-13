@@ -6,7 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyWebApi.Context;
 using MyWebApi.Repository;
+using MyWebApi.Repository.Interface;
 using MyWebApi.Service;
+using MyWebApi.Service.Interface;
 using System;
 
 namespace MyWebApi
@@ -26,6 +28,10 @@ namespace MyWebApi
             services.AddScoped<IAccountRepository, AccountRepository>();
 
             services.AddScoped<IAccountService, AccountService>();
+
+            services.AddScoped<IPunchClockRepository, PunchClockRepository>();
+
+            services.AddScoped<IPunchClockService, PunchClockService>();
 
             services.AddControllers();
 

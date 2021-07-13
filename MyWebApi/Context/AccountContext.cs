@@ -10,5 +10,6 @@ namespace MyWebApi.Context
         }
 
         public virtual DbSet<AccountModel> accounts { get; set; }
+        public virtual DbSet<OneDayPunchModel> punches { get; set; }
     }
 }

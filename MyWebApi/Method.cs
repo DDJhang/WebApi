@@ -2,6 +2,7 @@
 using MyWebApi.Model;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,17 +27,24 @@ namespace MyWebApi
             return date.Year.ToString() + "_" + date.Month.ToString() + "_" + date.Day.ToString();
         }
 
+        public static string DateTimeToPunchString(DateTime date)
+        {
+            return date.Hour.ToString() + ":" + date.Minute.ToString() + ":" + date.Second.ToString();
+        }
+
         public static bool CheckTableExist(string connectString, string tableName)
         {
             MySqlConnection sqlDB = new MySqlConnection(connectString);
 
             sqlDB.Open();
 
-            var strCmd = "SELECT * FROM sys.tables WHERE name = '" + tableName + "'";
-            MySqlCommand cmd = new MySqlCommand(strCmd, sqlDB);
+            var strCmd = "SELECT * FROM information_schema.TABLES where table_name = '" + tableName + "' AND TABLE_SCHEMA = 'account';";
 
-            var reader = cmd.ExecuteReader();
-            return reader.HasRows;
+            MySqlDataAdapter adp = new MySqlDataAdapter(strCmd, sqlDB);
+            DataSet ds = new DataSet();
+            adp.Fill(ds);
+
+            return ds.Tables[0].Rows.Count > 0;
         }
     }
 }

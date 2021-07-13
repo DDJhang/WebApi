@@ -20,7 +20,7 @@ namespace MyWebApi.Service
         {
             var punch = await _rep.GetPunchData(model.Account);
 
-            string time = Method.DateTimeToTableName(DateTime.Now);
+            string time = Method.DateTimeToPunchString(DateTime.Now);
             if (punch == null)
             {
                 var punchModel = new OneDayPunchModel()

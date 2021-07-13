@@ -14,11 +14,11 @@ namespace MyWebApi.Repository
 {
     public class PunchClockRepository : IPunchClockRepository
     {
-        private PunchClockContext _context;
+        private AccountContext _context;
 
         private string _connectString = "Data Source=localhost;port=3306;User ID=root; Password=123456; database='account';";
 
-        public PunchClockRepository(PunchClockContext context)
+        public PunchClockRepository(AccountContext context)
         {
             _context = context;
 
@@ -43,7 +43,7 @@ namespace MyWebApi.Repository
             {
                 var tableName = Method.DateTimeToTableName(DateTime.Now);
                 var sql = "SELECT * FROM " + tableName + " WHERE account = @account";
-                var model = await connnect.QueryFirstAsync<OneDayPunchModel>(sql, param: new
+                var model = await connnect.QueryFirstOrDefaultAsync<OneDayPunchModel>(sql, param: new
                 {
                     account,
                 });
@@ -128,6 +128,8 @@ namespace MyWebApi.Repository
 
         public async Task<bool> SaveChangesAsync()
         {
+
+
             return await _context.SaveChangesAsync() > 0;
         }
     }

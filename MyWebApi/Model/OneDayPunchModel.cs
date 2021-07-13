@@ -3,8 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyWebApi.Model
 {
-    [Table("punch")]
-    public class OneDayPunchModel
+    [Table("punch")]    public class OneDayPunchModel
     {
         [Key]
         [Column("account")]
