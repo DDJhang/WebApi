@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\m5860\\Desktop\\WebApi\\MyWebApi\\MyWebApi.csproj": {}
+    "C:\\Users\\user\\Desktop\\MyWebApi\\MyWebApi\\MyWebApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\m5860\\Desktop\\WebApi\\MyWebApi\\MyWebApi.csproj": {
+    "C:\\Users\\user\\Desktop\\MyWebApi\\MyWebApi\\MyWebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\m5860\\Desktop\\WebApi\\MyWebApi\\MyWebApi.csproj",
+        "projectUniqueName": "C:\\Users\\user\\Desktop\\MyWebApi\\MyWebApi\\MyWebApi.csproj",
         "projectName": "MyWebApi",
-        "projectPath": "C:\\Users\\m5860\\Desktop\\WebApi\\MyWebApi\\MyWebApi.csproj",
-        "packagesPath": "C:\\Users\\m5860\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\m5860\\Desktop\\WebApi\\MyWebApi\\obj\\",
+        "projectPath": "C:\\Users\\user\\Desktop\\MyWebApi\\MyWebApi\\MyWebApi.csproj",
+        "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\user\\Desktop\\MyWebApi\\MyWebApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\m5860\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -26,7 +26,6 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -38,7 +37,6 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "Dapper": {
               "target": "Package",
@@ -75,7 +73,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
         }
       }
     }

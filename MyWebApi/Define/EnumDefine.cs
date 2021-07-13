@@ -11,16 +11,10 @@
         InvalidAccount,
     }
 
-    public enum PunchStatus
-    { 
-        PunchIn,
-        PunchOut
-    }
-
     public enum AttendanceStatus
     {
-        Today,
-        SevenDays,
+        Today = 1,
+        SevenDays = 7,
         //ThirtyDays,
     }
 }

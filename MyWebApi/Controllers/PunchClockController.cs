@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyWebApi.Definition;
+using MySql.Data.MySqlClient;
 using MyWebApi.Model;
 using MyWebApi.Response.Punch;
+using MyWebApi.Service.Interface;
 using System;
 using System.Threading.Tasks;
 
@@ -11,61 +12,64 @@ namespace MyWebApi.Controllers
     [Route("api/[controller]")]
     public class PunchClockController : ControllerBase
     {
-        public PunchClockController()
+        private IPunchClockService _service;
+
+        private string _connectString = "Data Source=localhost;port=3306;User ID=root; Password=123456; Persist Security Info=yes";
+
+        public PunchClockController(IPunchClockService service)
         {
-            // TODO......
+            _service = service;
         }
 
-        [HttpPost("PunchIn")]
-        public async Task<ActionResult<PunchResponse>> PunchIn(PunchModel model)
+        [HttpPost("CreatePunchTable")]
+        public ActionResult<string> CrreateDB()
         {
-            var response = new PunchResponse()
-            {
-                Message = "打卡失敗..."
-            };
+            var tableName = Method.DateTimeToTableName(DateTime.Now);
+            if (Method.CheckTableExist(_connectString, tableName))
+                return "Already TABLE => " + tableName;
 
-            if (model.Status == PunchStatus.PunchOut)
-                return response;
+            var strCmd = "CREATE DATABASE '" + tableName + "';";
 
-            var curTick = DateTime.Now.Ticks;
+            MySqlConnection sqlDB = new MySqlConnection(_connectString);
+            MySqlCommand cmd = new MySqlCommand(strCmd, sqlDB);
 
-            // TODO......
+            sqlDB.Open();
+            cmd.ExecuteNonQuery();
+            sqlDB.Close();
 
-            response.Message = "打卡成功..." + DateTime.Now.ToString();
-            return response;
+            return "Created TABLE => " + tableName;
         }
 
-        [HttpPost("PunchOut")]
-        public async Task<ActionResult<PunchResponse>> PunchOut(PunchModel model)
+
+        [HttpPost("PunchClock")]
+        public async Task<ActionResult<PunchResponse>> PunchClock(PunchModel model)
         {
-            var response = new PunchResponse()
+            var tableName = Method.DateTimeToTableName(DateTime.Now);
+            if (!Method.CheckTableExist(_connectString, tableName))
             {
-                Message = "打卡失敗..."
-            };
+                return new PunchResponse()
+                {
+                    Message = "打卡失敗(Invalid Table)..."
+                };
+            }
 
-            if (model.Status == PunchStatus.PunchIn)
-                return response;
-
-            var curTick = DateTime.Now.Ticks;
-
-            // TODO......
-
-            response.Message = "打卡成功..." + DateTime.Now.ToString();
-            return response;
+            return await _service.PunchClock(model);
         }
 
         [HttpGet("GetAttendance")]
         public async Task<ActionResult<AttendanceResponse>> GetAttendance(AttendanceModel model)
         {
-            var response = new AttendanceResponse()
+            var tableName = Method.DateTimeToTableName(DateTime.Now);
+            if (!Method.CheckTableExist(_connectString, tableName))
             {
-                Message = "獲取失敗...",
-                Data = null
-            };
+                return new AttendanceResponse()
+                {
+                    Message = "獲取失敗(Invalid Table)...",
+                    Data = null
+                };
+            }
 
-            // TODO......
-
-            return response;
+            return await _service.GetAttendance(model);
         }
     }
 }

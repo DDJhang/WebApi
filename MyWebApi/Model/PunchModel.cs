@@ -6,6 +6,5 @@ namespace MyWebApi.Model
     {
         public string Account { get; set; }
         public string Name { get; set; }
-        public PunchStatus Status { get; set; }
     }
 }
