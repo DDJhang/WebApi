@@ -28,7 +28,7 @@ namespace MyWebApi.Controllers
             if (Method.CheckTableExist(_checkTableSqlCmd, tableName))
                 return "Already TABLE => " + tableName;
 
-            var strCmd = "CREATE TABLE " + tableName + " (account CHAR  NOT NULL, name CHAR  NOT NULL, punchin CHAR  NOT NULL, punchout CHAR  NOT NULL, PRIMARY KEY (account));";
+            var strCmd = "CREATE TABLE " + tableName + " (account VARCHAR(50)  NOT NULL, name VARCHAR(50)  NOT NULL, punchin CHAR(10)  NOT NULL, punchout CHAR(10)  NOT NULL, PRIMARY KEY (account));";
 
             var connectString = "Database=account; Data Source=127.0.0.1; User Id=root; port=3306; Password=123456;";
             using (var connection = new MySqlConnection(connectString))

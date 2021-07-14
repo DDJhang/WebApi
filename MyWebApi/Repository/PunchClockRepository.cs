@@ -14,29 +14,70 @@ namespace MyWebApi.Repository
 {
     public class PunchClockRepository : IPunchClockRepository
     {
-        private AccountContext _context;
-
         private string _connectString = "Data Source=localhost;port=3306;User ID=root; Password=123456; database='account';";
 
-        public PunchClockRepository(AccountContext context)
+        public PunchClockRepository()
         {
-            _context = context;
-
             FluentMapper.EntityMaps.Clear();
             FluentMapper.Initialize(config => {
                 config.AddMap(new PunchClockMap());
             });
         }
 
-        public void Add<T>(T entity) where T : class
+        public async Task Add(OneDayPunchModel model, string tableName)
         {
-            _context.Add(entity);
+            using (var connection = new MySqlConnection(_connectString))
+            {
+                connection.Open();
+                var strCmd = "INSERT INTO " + tableName + " (account, name, punchin, punchout) Values('" +
+                             model.Account + "', '" + model.Name + "', '" + model.PunchIn + "', '" + model.PunchOut + "')";
+                using (var cmd = new MySqlCommand(strCmd, connection))
+                {
+                    try
+                    {
+                        await cmd.ExecuteNonQueryAsync();
+                    }
+                    finally
+                    {
+                        strCmd = null;
+                        connection.Close();
+
+                        cmd.Dispose();
+                        connection.Dispose();
+                    }
+                }
+            }
         }
 
-        public void Delete<T>(T entity) where T : class
+        public async Task Update(OneDayPunchModel model, string tableName, PunchType type)
         {
-            _context.Remove(entity);
+            using (var connection = new MySqlConnection(_connectString))
+            {
+                var param = type.ToString().ToLower();
+
+                var strTime = Method.DateTimeToPunchString(DateTime.Now);
+
+                connection.Open();
+                var strCmd = "UPDATE " + tableName + " SET " + param + " = '" + strTime + 
+                             "' WHERE account = '" + model.Account + "'";
+                using (var cmd = new MySqlCommand(strCmd, connection))
+                {
+                    try
+                    {
+                        await cmd.ExecuteNonQueryAsync();
+                    }
+                    finally
+                    {
+                        strCmd = null;
+                        connection.Close();
+
+                        cmd.Dispose();
+                        connection.Dispose();
+                    }
+                }
+            }
         }
+
         public async Task<OneDayPunchModel> GetPunchData(string account)
         {
             using (var connnect = new MySqlConnection(_connectString))
@@ -48,6 +89,7 @@ namespace MyWebApi.Repository
                     account,
                 });
 
+                sql = null;
                 return model;
             }
         }
@@ -124,13 +166,6 @@ namespace MyWebApi.Repository
             {
                 return null;
             }
-        }
-
-        public async Task<bool> SaveChangesAsync()
-        {
-
-
-            return await _context.SaveChangesAsync() > 0;
         }
     }
 }

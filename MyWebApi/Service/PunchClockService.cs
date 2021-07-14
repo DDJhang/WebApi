@@ -1,4 +1,5 @@
-﻿using MyWebApi.Model;
+﻿using MyWebApi.Definition;
+using MyWebApi.Model;
 using MyWebApi.Repository.Interface;
 using MyWebApi.Response.Punch;
 using MyWebApi.Service.Interface;
@@ -20,6 +21,8 @@ namespace MyWebApi.Service
         {
             var punch = await _rep.GetPunchData(model.Account);
 
+            var punchType = PunchType.PunchIn;
+            string tableName = Method.DateTimeToTableName(DateTime.Now);
             string time = Method.DateTimeToPunchString(DateTime.Now);
             if (punch == null)
             {
@@ -28,20 +31,20 @@ namespace MyWebApi.Service
                     Account = model.Account,
                     Name = model.Name,
                     PunchIn = time,
-                    PunchOut = ""
+                    PunchOut = "-"
                 };
-                _rep.Add(punchModel);
-                await _rep.SaveChangesAsync();
+                await _rep.Add(punchModel, tableName);
             }
             else
             {
                 punch.PunchOut = time;
-                await _rep.SaveChangesAsync();
+                punchType = PunchType.PunchOut;
+                await _rep.Update(punch, tableName, PunchType.PunchOut);
             }
 
             var response = new PunchResponse()
             {
-                Message = "打卡上班成功... => " + time
+                Message = "打卡成功... " + punchType.ToString() + " => " + time
             };
 
             return response;

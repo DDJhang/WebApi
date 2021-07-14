@@ -70,7 +70,7 @@ namespace MyWebApi.Repository
             using (var conn = new MySqlConnection(_connectString))
             {
                 var sql = "SELECT * FROM accounts WHERE account = @account";
-                return await conn.QueryFirstAsync<AccountModel>(sql, param: new
+                return await conn.QueryFirstOrDefaultAsync<AccountModel>(sql, param: new
                 {
                     account
                 });

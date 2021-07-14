@@ -11,6 +11,12 @@
         InvalidAccount,
     }
 
+    public enum PunchType
+    { 
+        PunchIn,
+        PunchOut
+    }
+
     public enum AttendanceStatus
     {
         Today = 1,
