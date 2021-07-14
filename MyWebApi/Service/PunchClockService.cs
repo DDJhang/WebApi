@@ -4,6 +4,7 @@ using MyWebApi.Repository.Interface;
 using MyWebApi.Response.Punch;
 using MyWebApi.Service.Interface;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MyWebApi.Service
@@ -52,25 +53,48 @@ namespace MyWebApi.Service
 
         public async Task<AttendanceResponse> GetAttendance(AttendanceModel model)
         {
-            var punch = await _rep.GetPunchListByAccount(model.Account, model.Status);
-
-            var response = new AttendanceResponse()
-            {
-                Message = "FAIL.....",
-                Data = null
-            };
+            var days = (int)model.Status;
+            var punch = await _rep.GetPunchListByAccount(model.Account, days);
 
             if (punch == null)
             {
-                return response;
+                return new AttendanceResponse()
+                {
+                    Message = "FAIL.....",
+                    Data = null
+                };
             }
             else
             {
-                response.Message = "Success.....";
-                response.Data = punch;
-
-                return response;
+                return new AttendanceResponse()
+                {
+                    Message = "Success.....",
+                    Data = punch
+                };
             }
+        }
+
+        public async Task<AttendanceListResponse> GetAttendanceList(AttendanceStatus status)
+        {
+            var days = (int)status;
+            var punch = await _rep.GetAllPunchList(days);
+
+            var keys = punch.Keys.ToArray();
+            var values = punch.Values.ToArray();
+            var response = new AttendanceListResponse()
+            {
+                List = new AttendanceResponse[keys.Length]
+            };
+
+            for (int i = 0; i < keys.Length; i++)
+            {
+                response.List[i] = new AttendanceResponse() {
+                    Message = keys[i],
+                    Data = values[i]
+                };
+            }
+
+            return response;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
+using MyWebApi.Definition;
 using MyWebApi.Model;
 using MyWebApi.Response.Punch;
 using MyWebApi.Service.Interface;
@@ -19,6 +20,12 @@ namespace MyWebApi.Controllers
         public PunchClockController(IPunchClockService service)
         {
             _service = service;
+        }
+
+        [HttpPost("Test")]
+        public ActionResult<string> Test()
+        {
+            return "TEST!!!";
         }
 
         [HttpPost("CreatePunchTable")]
@@ -72,17 +79,13 @@ namespace MyWebApi.Controllers
         [HttpGet("GetAttendance")]
         public async Task<ActionResult<AttendanceResponse>> GetAttendance(AttendanceModel model)
         {
-            var tableName = Method.DateTimeToTableName(DateTime.Now);
-            if (!Method.CheckTableExist(_checkTableSqlCmd, tableName))
-            {
-                return new AttendanceResponse()
-                {
-                    Message = "獲取失敗(Invalid Table)...",
-                    Data = null
-                };
-            }
-
             return await _service.GetAttendance(model);
+        }
+
+        [HttpGet("GetAttendanceList")]
+        public async Task<ActionResult<AttendanceListResponse>> GetAttendanceList(AttendanceStatus status)
+        {
+            return await _service.GetAttendanceList(status);
         }
     }
 }

@@ -20,7 +20,7 @@
     public enum AttendanceStatus
     {
         Today = 1,
+        ThreeDays = 3,
         SevenDays = 7,
-        //ThirtyDays,
     }
 }
