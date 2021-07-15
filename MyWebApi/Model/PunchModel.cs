@@ -1,6 +1,4 @@
-﻿using MyWebApi.Definition;
-
-namespace MyWebApi.Model
+﻿namespace MyWebApi.Model
 {
     public class PunchModel
     {

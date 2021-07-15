@@ -10,7 +10,7 @@ namespace MyWebApi.Repository.Map
             Map(p => p.Account).ToColumn("account");
             Map(p => p.Password).ToColumn("password");
             Map(p => p.Name).ToColumn("name");
-            Map(p => p.Delete).ToColumn("inactive");
+            Map(p => p.Inactive).ToColumn("inactive");
         }
     }
 }

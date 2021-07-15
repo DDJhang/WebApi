@@ -16,7 +16,7 @@ namespace MyWebApi
             {
                 Account = model.Account,
                 Name = model.Name,
-                Delete = model.Delete
+                Delete = model.Inactive
             };
 
             return dto;

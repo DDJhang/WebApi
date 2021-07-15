@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MyWebApi.Context;
 using MyWebApi.Repository;
 using MyWebApi.Repository.Interface;
 using MyWebApi.Service;
@@ -25,18 +24,15 @@ namespace MyWebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddSingleton<IAccountRepository, AccountRepository>();
 
-            services.AddScoped<IAccountService, AccountService>();
+            services.AddSingleton<IAccountService, AccountService>();
 
-            services.AddScoped<IPunchClockRepository, PunchClockRepository>();
+            services.AddSingleton<IPunchClockRepository, PunchClockRepository>();
 
-            services.AddScoped<IPunchClockService, PunchClockService>();
+            services.AddSingleton<IPunchClockService, PunchClockService>();
 
             services.AddControllers();
-
-            services.AddDbContextPool<AccountContext>(opt =>
-                                               opt.UseMySQL(Configuration.GetConnectionString("AccountContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

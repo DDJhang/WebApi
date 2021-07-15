@@ -1,7 +1,6 @@
 ﻿using Dapper;
 using Dapper.FluentMap;
 using MySql.Data.MySqlClient;
-using MyWebApi.Context;
 using MyWebApi.Model;
 using MyWebApi.Repository.Map;
 using System.Collections.Generic;
@@ -11,14 +10,11 @@ namespace MyWebApi.Repository
 {
     public class AccountRepository : IAccountRepository
     {
-        private AccountContext _context;
-
         private string _connectString = "Data Source=localhost;port=3306;User ID=root; Password=123456; database='account';";
+        private string _tableName = "accounts";
 
-        public AccountRepository(AccountContext context)
+        public AccountRepository()
         {
-            _context = context;
-
             FluentMapper.EntityMaps.Clear();
             FluentMapper.Initialize(config =>
             {
@@ -27,21 +23,32 @@ namespace MyWebApi.Repository
         }
 
         // ------------ Interface ----------
-        public void Add<T>(T entity) where T : class
+        public async Task Add(AccountModel model)
         {
-            _context.Add(entity);
+            using var connection = new MySqlConnection(_connectString);
+            var strCmd = "INSERT INTO " + _tableName + " (account, password, name, inactive) VALUES(@account, @password, @name, @inactive);";
+            await connection.ExecuteAsync(strCmd, model);
         }
 
-        public void Delete<T>(T entity) where T : class
+        public async Task UpdateInActive(AccountModel model)
         {
-            _context.Remove(entity);
+            using var connection = new MySqlConnection(_connectString);
+            var strCmd = "UPDATE " + _tableName + " SET inactive = @inactive WHERE account = @account";
+            await connection.ExecuteAsync(strCmd, model);
+        }
+
+        public async Task Delete(AccountModel model)
+        {
+            using var connection = new MySqlConnection(_connectString);
+            var strCmd = "DELETE FROM " + _tableName + " WHERE account = @account";
+            await connection.ExecuteAsync(strCmd, model);
         }
 
         public async Task DeleteByAccount(string account)
         {
             var player = await GetPlayerByAccount(account);
             if (player != null)
-                Delete(player);
+                await Delete(player);
         }
 
         public async Task<IEnumerable<AccountModel>> GetPlayerList(bool containDelete)
@@ -93,10 +100,6 @@ namespace MyWebApi.Repository
             //return await _context.accounts.AsNoTracking().Where(x => x.Account == account).SingleOrDefaultAsync();
         }
 
-        public async Task<bool> SaveChangesAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
-        }
         // ------------ Interface ----------
     }
 }

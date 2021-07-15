@@ -3,17 +3,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyWebApi.Model
 {
-    [Table("accounts")]
     public class AccountModel
     {
         [Key]
-        [Column("account")]
+        //[Column("account")]
         public string Account { get; set; }
-        [Column("password")]
+        //[Column("password")]
         public string Password { get; set; }
-        [Column("name")]
+        //[Column("name")]
         public string Name { get; set; }
-        [Column("inactive")]
-        public int Delete { get; set; }
+        //[Column("inactive")]
+        public int Inactive { get; set; }
     }
 }

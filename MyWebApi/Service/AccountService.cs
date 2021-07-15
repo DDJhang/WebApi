@@ -42,11 +42,10 @@ namespace MyWebApi.Service
                 Account = model.Account,
                 Password = model.Password,
                 Name = model.Name,
-                Delete = 0
+                Inactive = 0
             };
 
-            _resp.Add(account);
-            await _resp.SaveChangesAsync();
+            await _resp.Add(account);
 
             return Method.AccountToDTO(account);
         }
@@ -66,7 +65,6 @@ namespace MyWebApi.Service
             }
 
             await _resp.DeleteByAccount(account);
-            await _resp.SaveChangesAsync();
 
             return response;
         }
@@ -151,9 +149,9 @@ namespace MyWebApi.Service
                 return response;
             }
 
-            model.Delete = 1;
+            model.Inactive = 1;
 
-            await _resp.SaveChangesAsync();
+            await _resp.UpdateInActive(model);
 
             response.Account = Method.AccountToDTO(model);
 
@@ -175,9 +173,9 @@ namespace MyWebApi.Service
                 return response;
             }
 
-            model.Delete = 0;
+            model.Inactive = 0;
 
-            await _resp.SaveChangesAsync();
+            await _resp.UpdateInActive(model);
 
             response.Account = Method.AccountToDTO(model);
 
