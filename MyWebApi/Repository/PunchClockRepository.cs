@@ -77,7 +77,7 @@ namespace MyWebApi.Repository
             }
         }
 
-        public async Task<OneDayPunchModel> GetPunchData(string account)
+        public async Task<dynamic> GetPunchData(string account)
         {
             using (var connnect = new MySqlConnection(_connectString))
             {
@@ -93,9 +93,9 @@ namespace MyWebApi.Repository
             }
         }
         
-        public async Task<List<OneDayPunchModel>> GetPunchListByAccount(string account, int days)
+        public async Task<List<dynamic>> GetPunchListByAccount(string account, int days)
         {
-            List<OneDayPunchModel> list = new List<OneDayPunchModel>();
+            List<dynamic> list = new List<dynamic>();
             for (int i = 0; i < days; i++)
             {
                 var date = DateTime.Now.AddDays(-i);
@@ -131,9 +131,9 @@ namespace MyWebApi.Repository
             return list;
         }
 
-        public async Task<Dictionary<string, IEnumerable<OneDayPunchModel>>> GetAllPunchList(int days)
+        public async Task<Dictionary<string, IEnumerable<dynamic>>> GetAllPunchList(int days)
         {
-            Dictionary<string, IEnumerable<OneDayPunchModel>> dict = new Dictionary<string, IEnumerable<OneDayPunchModel>>();
+            Dictionary<string, IEnumerable<dynamic>> dict = new Dictionary<string, IEnumerable<dynamic>>();
 
             for (int i = 0; i < days; i++)
             {

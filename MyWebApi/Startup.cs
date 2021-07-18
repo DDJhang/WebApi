@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MyWebApi.Observable;
 using MyWebApi.Repository;
 using MyWebApi.Repository.Interface;
 using MyWebApi.Service;
@@ -24,6 +25,10 @@ namespace MyWebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<ILogService, LogService>();
+
+            services.AddSingleton<LogObserver>();
+
             services.AddSingleton<IAccountRepository, AccountRepository>();
 
             services.AddSingleton<IAccountService, AccountService>();

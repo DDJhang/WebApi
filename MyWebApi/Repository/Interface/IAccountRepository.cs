@@ -1,4 +1,5 @@
 ﻿using MyWebApi.Model;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,7 +11,7 @@ namespace MyWebApi.Repository
         Task UpdateInActive(AccountModel model);
         Task Delete(AccountModel model);
         Task DeleteByAccount(string account);
-        Task<IEnumerable<AccountModel>> GetPlayerList(bool containDelete);
-        Task<AccountModel> GetPlayerByAccount(string account, bool isTracking = true);
+        Task<IEnumerable<dynamic>> GetPlayerList(bool containDelete);
+        Task<dynamic> GetPlayerByAccount(string account, bool isTracking = true);
     }
 }

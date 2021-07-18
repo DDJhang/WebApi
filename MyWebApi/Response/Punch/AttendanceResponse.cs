@@ -6,6 +6,6 @@ namespace MyWebApi.Response.Punch
     public class AttendanceResponse
     {
         public string Message { get; set; }
-        public IEnumerable<OneDayPunchModel> Data { get; set; }
+        public IEnumerable<dynamic> Data { get; set; }
     }
 }

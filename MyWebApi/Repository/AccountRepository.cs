@@ -3,6 +3,7 @@ using Dapper.FluentMap;
 using MySql.Data.MySqlClient;
 using MyWebApi.Model;
 using MyWebApi.Repository.Map;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -51,7 +52,7 @@ namespace MyWebApi.Repository
                 await Delete(player);
         }
 
-        public async Task<IEnumerable<AccountModel>> GetPlayerList(bool containDelete)
+        public async Task<IEnumerable<dynamic>> GetPlayerList(bool containDelete)
         {
             if (containDelete)
             {
@@ -71,7 +72,7 @@ namespace MyWebApi.Repository
             }
         }
 
-        public async Task<AccountModel> GetPlayerByAccount(string account, bool isTracking = true)
+        public async Task<dynamic> GetPlayerByAccount(string account, bool isTracking = true)
         {
             // 記憶體提升最少
             using (var conn = new MySqlConnection(_connectString))

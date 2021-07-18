@@ -23,4 +23,10 @@
         ThreeDays = 3,
         SevenDays = 7,
     }
+
+    public enum LogType
+    { 
+        CreateAccount,
+        LoginAccount,
+    }
 }

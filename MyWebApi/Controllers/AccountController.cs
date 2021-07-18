@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using MyWebApi.Service;
 using MyWebApi.Response;
 using MyWebApi.Definition;
+using MyWebApi.Observable;
+
 
 namespace MyWebApi.Controllers
 {
@@ -13,9 +15,14 @@ namespace MyWebApi.Controllers
     {
         private IAccountService _service;
 
-        public AccountController(IAccountService service)
+        private ILogService _logService;
+
+        public AccountController(IAccountService service, ILogService log, LogObserver logserver)
         {
             _service = service;
+            _logService = log;
+
+            _logService.Subscribe(logserver);
         }
 
         #region Create
@@ -92,7 +99,18 @@ namespace MyWebApi.Controllers
         public async Task<ActionResult<LoginResponse>> LoginAccount(LoginModel model)
         {
             var response = await _service.Login(model);
-            
+
+            if (string.IsNullOrEmpty(response.ErrorMsg))
+            { 
+                _logService.WriteLog(new LogMessage() 
+                {
+                    Type = LogType.LoginAccount,
+                    Account = model.Account,
+                    Time = Method.DateTimeToPunchString(System.DateTime.Now),
+                    Message = LogType.LoginAccount.ToString()
+                });
+            }
+
             return response;
         }
     }

@@ -2,6 +2,7 @@
 using MyWebApi.Model;
 using MyWebApi.Repository;
 using MyWebApi.Response;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -71,12 +72,12 @@ namespace MyWebApi.Service
 
         public async Task<GetAccountListResponse> GetAccountList(bool containDelete)
         {
-            IEnumerable<AccountModel> playerList = await _resp.GetPlayerList(containDelete);
+            IEnumerable<dynamic> playerList = await _resp.GetPlayerList(containDelete);
 
             var response = new GetAccountListResponse()
             {
                 Status = AccountStatus.Success,
-                Accounts = playerList.Select(x => Method.AccountToDTO(x)).ToArray()
+                Accounts = playerList.Select(x => Method.AccountToDTO((AccountModel)x)).ToArray()
             };
 
             return response;
