@@ -7,6 +7,7 @@ namespace MyWebApi.Service.Interface
 {
     public interface IPunchClockService
     {
+        string CreateDB();
         Task<PunchResponse> PunchClock(PunchModel model);
         Task<AttendanceResponse> GetAttendance(AttendanceModel model);
         Task<AttendanceListResponse> GetAttendanceList(AttendanceStatus status); 
