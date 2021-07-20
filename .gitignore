@@ -1,3 +1,5 @@
+.csproj/
 MyWebApi/obj
 MyWebApi/bin
-.vs
+.vs/
+MyWebApi/MyWebApi.csproj
