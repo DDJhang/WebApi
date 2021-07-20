@@ -5,7 +5,7 @@ using MyWebApi.Service;
 using MyWebApi.Response;
 using MyWebApi.Definition;
 using MyWebApi.Observable;
-
+using MyWebApi.Manager;
 
 namespace MyWebApi.Controllers
 {
@@ -13,13 +13,18 @@ namespace MyWebApi.Controllers
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
+        private LoginManager _loginManager;
+
         private IAccountService _service;
 
         private ILogService _logService;
 
-        public AccountController(IAccountService service, ILogService log, LogObserver logserver)
+        public AccountController(IAccountService service, LoginManager loginManager, ILogService log, LogObserver logserver)
         {
             _service = service;
+
+            _loginManager = loginManager;
+
             _logService = log;
 
             _logService.Subscribe(logserver);
@@ -101,7 +106,9 @@ namespace MyWebApi.Controllers
             var response = await _service.Login(model);
 
             if (string.IsNullOrEmpty(response.ErrorMsg))
-            { 
+            {
+                _loginManager.Add(response.Data);
+
                 _logService.WriteLog(new LogMessage() 
                 {
                     Type = LogType.LoginAccount,
@@ -112,6 +119,25 @@ namespace MyWebApi.Controllers
             }
 
             return response;
+        }
+
+        [HttpPost("Logout")]
+        public ActionResult<string> LogoutAccount(string account)
+        {
+            if (_loginManager.RemoveByAccount(account))
+            { 
+                _logService.WriteLog(new LogMessage()
+                {
+                    Type = LogType.LogoutAccount,
+                    Account = account,
+                    Time = Method.DateTimeToPunchString(System.DateTime.Now),
+                    Message = LogType.LoginAccount.ToString()
+                });
+
+                return "Logout Success!!";
+            }
+
+            return "Logout Fail...";
         }
     }
 }
