@@ -28,6 +28,5 @@
     { 
         CreateAccount,
         LoginAccount,
-        LogoutAccount,
     }
 }

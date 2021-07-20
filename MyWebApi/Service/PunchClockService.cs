@@ -1,5 +1,4 @@
 ﻿using MyWebApi.Definition;
-using MyWebApi.Manager;
 using MyWebApi.Model;
 using MyWebApi.Repository.Interface;
 using MyWebApi.Response.Punch;
@@ -13,41 +12,18 @@ namespace MyWebApi.Service
     public class PunchClockService : IPunchClockService
     {
         private IPunchClockRepository _rep;
-        private LoginManager _loginManager;
 
-        public PunchClockService(IPunchClockRepository rep, LoginManager loginManager)
+        public PunchClockService(IPunchClockRepository rep)
         {
             _rep = rep;
-            _loginManager = loginManager;
-        }
-
-        public string CreateDB()
-        {
-            return _rep.CreateDB();
         }
 
         public async Task<PunchResponse> PunchClock(PunchModel model)
         {
-            if (!_loginManager.IsLogin(model.Account))
-            {
-                return new PunchResponse()
-                {
-                    Message = "帳號未登入..."
-                };
-            }
-
-            var tableName = Method.DateTimeToTableName(DateTime.Now);
-            if (!_rep.CheckTableExist(tableName))
-            {
-                return new PunchResponse()
-                {
-                    Message = "打卡失敗(Invalid Table)..."
-                };
-            }
-
             var punch = await _rep.GetPunchData(model.Account);
 
             var punchType = PunchType.PunchIn;
+            string tableName = Method.DateTimeToTableName(DateTime.Now);
             string time = Method.DateTimeToPunchString(DateTime.Now);
             if (punch == null)
             {
