@@ -1,6 +1,5 @@
 ﻿using MyWebApi.Repository;
 using System;
-using System.Collections.Generic;
 
 namespace MyWebApi.Observable
 {
@@ -8,61 +7,35 @@ namespace MyWebApi.Observable
     {
         private IAccountRepository _resp;
 
-        private List<IObserver<LogMessage>> _observers = null;
+        private LogObservable _observable;
 
-        public LogService(IAccountRepository resp)
+        public LogService(IAccountRepository resp, LogObservable observable, LogObserver logserver)
         {
             _resp = resp;
-            _observers = new List<IObserver<LogMessage>>();
-        }
+            _observable = observable;
 
-        public IDisposable Subscribe(IObserver<LogMessage> observer)
-        {
-            if (_observers != null && !_observers.Contains(observer))
-                _observers.Add(observer);
-            return new LogDisposable(_observers, observer);
+            _observable.Subscribe(logserver);
         }
 
         public void WriteLog(LogMessage msg)
         {
             var hadAccount = _resp.GetPlayerByAccount(msg.Account) != null;
 
-            for (int i = 0; i < _observers.Count; i++)
+            for (int i = 0; i < _observable.Observers.Count; i++)
             {
                 if(hadAccount)
-                    _observers[i].OnNext(msg);
+                    _observable.Observers[i].OnNext(msg);
                 else
-                    _observers[i].OnError(new Exception("Invalid Account: " + msg.Account));
+                    _observable.Observers[i].OnError(new Exception("Invalid Account: " + msg.Account));
             }
         }
 
         public void EndLog()
         {
-            for (int i = 0; i < _observers.Count; i++)
-                _observers[i].OnCompleted();
+            for (int i = 0; i < _observable.Observers.Count; i++)
+                _observable.Observers[i].OnCompleted();
 
-            _observers.Clear();
-        }
-    }
-
-    public class LogDisposable : IDisposable
-    {
-        private List<IObserver<LogMessage>> _observers = null;
-        private IObserver<LogMessage> _observer = null;
-
-        public LogDisposable(List<IObserver<LogMessage>> observers, IObserver<LogMessage> observer)
-        {
-            _observers = observers;
-            _observer = observer;
-        }
-
-        public void Dispose()
-        {
-            if (_observers != null && _observers.Contains(_observer))
-                _observers.Remove(_observer);
-
-            _observers = null;
-            _observer = null;
+            _observable.Observers.Clear();
         }
     }
 }

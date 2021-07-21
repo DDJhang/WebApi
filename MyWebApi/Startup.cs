@@ -31,6 +31,8 @@ namespace MyWebApi
 
             services.AddSingleton<ILogService, LogService>();
 
+            services.AddSingleton<LogObservable>();
+            
             services.AddSingleton<LogObserver>();
 
             services.AddSingleton<IAccountRepository, AccountRepository>();

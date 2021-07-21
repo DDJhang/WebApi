@@ -2,7 +2,7 @@
 
 namespace MyWebApi.Observable
 {
-    public interface ILogService : IObservable<LogMessage>
+    public interface ILogService
     {
         void WriteLog(LogMessage msg);
         void EndLog();

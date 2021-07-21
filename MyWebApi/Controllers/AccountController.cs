@@ -19,15 +19,13 @@ namespace MyWebApi.Controllers
 
         private ILogService _logService;
 
-        public AccountController(IAccountService service, LoginManager loginManager, ILogService log, LogObserver logserver)
+        public AccountController(IAccountService service, LoginManager loginManager, ILogService log)
         {
             _service = service;
 
             _loginManager = loginManager;
 
             _logService = log;
-
-            _logService.Subscribe(logserver);
         }
 
         #region Create
