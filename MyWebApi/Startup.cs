@@ -40,7 +40,7 @@ namespace MyWebApi
             services.AddSingleton<IAccountService, AccountService>();
 
             services.AddSingleton<IPunchClockRepository, PunchClockRepository>();
-
+             
             services.AddSingleton<IPunchClockService, PunchClockService>(); 
 
             services.AddControllers();
